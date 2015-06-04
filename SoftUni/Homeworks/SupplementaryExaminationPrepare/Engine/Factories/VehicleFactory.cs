@@ -20,7 +20,7 @@
             decimal motorbikeRegularRate = 1.35m;
             decimal motorbikeOvertimeRate = 3m;
 
-            IMotorbike motorbike = new Motorbike(licensePlate, ownerName, reservedHours, motorbikeOvertimeRate, motorbikeOvertimeRate);
+            IMotorbike motorbike = new Motorbike(licensePlate, ownerName, reservedHours, motorbikeRegularRate, motorbikeOvertimeRate);
             return motorbike;
         }
 
@@ -29,7 +29,7 @@
             decimal motorbikeRegularRate = 4.75m;
             decimal motorbikeOvertimeRate = 6m;
 
-            ITruck truck = new Truck(licensePlate, ownerName, reservedHours, motorbikeOvertimeRate, motorbikeOvertimeRate);
+            ITruck truck = new Truck(licensePlate, ownerName, reservedHours, motorbikeRegularRate, motorbikeOvertimeRate);
             return truck;
         }
     }

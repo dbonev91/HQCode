@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\Command.cs" />
+    <Compile Include="Engine\ConsoleInterface.cs" />
     <Compile Include="Engine\Factories\VehicleFactory.cs" />
     <Compile Include="Engine\Factories\VehicleParkFactory.cs" />
     <Compile Include="Engine\VehicleParkEngine.cs" />
@@ -51,6 +53,7 @@
     <Compile Include="Interfaces\ICar.cs" />
     <Compile Include="Interfaces\IMotorbike.cs" />
     <Compile Include="Interfaces\ITruck.cs" />
+    <Compile Include="Interfaces\Engine\IUserInterface.cs" />
     <Compile Include="Interfaces\IVehicle.cs" />
     <Compile Include="Interfaces\IVehiclePark.cs" />
     <Compile Include="Models\Car.cs" />

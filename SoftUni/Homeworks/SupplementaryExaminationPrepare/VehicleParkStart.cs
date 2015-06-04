@@ -1,4 +1,4 @@
-namespace VehiclePark
+﻿namespace VehiclePark
 {
     using Engine;
 
@@ -6,7 +6,7 @@ namespace VehiclePark
     {
         public static void Main()
         {
-            VehicleParkEngine.Instance.Start("car.AA1234BB.Mitko.4");
+            VehicleParkEngine.Instance.Start();
         }
     }
 }

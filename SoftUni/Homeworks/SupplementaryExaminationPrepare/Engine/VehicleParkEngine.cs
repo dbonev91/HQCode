@@ -17,11 +17,14 @@
         private readonly IVehiclePark vehiclePark;
         private readonly IDictionary<string, IVehicle> vehicles;
 
+        private readonly IUserInterface userInterface;
+
         private VehicleParkEngine()
         {
             this.vehicleParkFactory = new VehicleParkFactory();
             this.vehicleFactory = new VehicleFactory();
             this.vehicles = new Dictionary<string, IVehicle>();
+            this.userInterface = new ConsoleInterface();
         }
 
         public static IVehicleParkEngine Instance
@@ -37,30 +40,26 @@
             }
         }
 
-        public void Start(string command)
+        public void Start()
         {
-            Console.WriteLine(this.ProcessCommands(command));
+            this.ReadCommand();
         }
 
-        private string ProcessCommands(string command)
+        private ICollection<ICommand> ReadCommand()
         {
-            string output;
-            string [] commands = command.Split('.');
-            switch (commands[0])
+            var commands = new List<ICommand>();
+
+            foreach (var command in this.userInterface.Input())
             {
-                case "car":
-                    output = this.ParkCar(commands[1], commands[2], int.Parse(commands[3]));
-                    return output;
-                case "motorbike":
-                    output = this.ParkMotorbike(commands[1], commands[2], int.Parse(commands[3]));
-                    return output;
-                case "truck":
-                    output = this.ParkTruck(commands[1], commands[2], int.Parse(commands[3]));
-                    return output;
-                default:
-                    output = "Invalid command";
-                    return output;
+                commands.Add(Command.Parse(command));
             }
+
+            return commands;
+        }
+
+        private IEnumerable<string> ProcessCommands(ICollection<ICommand> commands)
+        {
+            return new string[] {"dsdfa", "ddsfa"};
         }
 
         private string ParkCar(string licensePlate, string ownerName, int reservedHours)
