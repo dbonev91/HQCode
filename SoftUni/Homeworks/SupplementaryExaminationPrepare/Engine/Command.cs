@@ -68,14 +68,8 @@
                 var split = paramKeyValue.Split(new[] { ParamKeyValueDelimiter }, StringSplitOptions.RemoveEmptyEntries);
                 string paramKey = this.RemoveParamsSlashes(split[0].Trim());
                 string paramValue = this.RemoveParamsSlashes(split[1].Trim());
-
+                
                 this.Parameters.Add(paramKey, paramValue);
-            }
-
-            Console.WriteLine("Name: {0}", this.Name);
-            foreach (var parameter in this.Parameters)
-            {
-                Console.WriteLine("Key: {0}, Value: {1}", parameter.Key, parameter.Value);
             }
         }
 

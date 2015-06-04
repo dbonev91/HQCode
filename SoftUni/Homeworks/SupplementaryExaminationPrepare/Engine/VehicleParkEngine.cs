@@ -1,4 +1,6 @@
-﻿namespace VehiclePark.Engine
+﻿using System.Runtime.InteropServices.ComTypes;
+
+namespace VehiclePark.Engine
 {
     using System;
     using Interfaces.Engine;
@@ -42,7 +44,9 @@
 
         public void Start()
         {
-            this.ReadCommand();
+            var commands = this.ReadCommand();
+            var processCommands = this.ProcessCommands(commands);
+            this.userInterface.Output(processCommands);
         }
 
         private ICollection<ICommand> ReadCommand()
@@ -59,7 +63,117 @@
 
         private IEnumerable<string> ProcessCommands(ICollection<ICommand> commands)
         {
-            return new string[] {"dsdfa", "ddsfa"};
+            var commandResults = new List<string>();
+
+            foreach (var command in commands)
+            {
+                string commandResult;
+
+                switch (command.Name)
+                {
+                    case EngineConstants.SetupPark:
+                        commandResult = this.SetupPark(int.Parse(command.Parameters["sectors"]), int.Parse(command.Parameters["placesPerSector"]));
+                        break;
+                    /*case EngineConstants.Park:
+                        switch (command.Parameters["type"])
+                        {
+                            case EngineConstants.VehicleTypeCar:
+                                if (!this.IsPlaceFree(int.Parse(command.Parameters["sector"]),
+                                    int.Parse(command.Parameters["place"])))
+                                {
+                                    commandResult = string.Format(EngineConstants.OccupiedPlace,
+                                        int.Parse(command.Parameters["sector"]), int.Parse(command.Parameters["place"]));
+                                    commandResults.Add(commandResult);
+                                    break;
+                                }
+
+                                if (!this.IsSectorExists(int.Parse(command.Parameters["sector"])))
+                                {
+                                    commandResult = string.Format(EngineConstants.WrongSector, int.Parse(command.Parameters["sector"]));
+                                    commandResults.Add(commandResult);
+                                    break;
+                                }
+
+                                if (!this.IsPlaceExists(int.Parse(command.Parameters["place"])))
+                                {
+                                    commandResult = string.Format(EngineConstants.WrongPlace,
+                                        int.Parse(command.Parameters["place"]), int.Parse(command.Parameters["sector"]));
+                                    commandResults.Add(commandResult);
+                                    break;
+                                }
+
+                                commandResult = this.ParkCar(command.Parameters["licensePlate"],
+                                        command.Parameters["owner"],
+                                        int.Parse(command.Parameters["hours"]));
+                                break;
+                            case EngineConstants.VehicleTypeMotorbike:
+                                if (!this.IsPlaceFree(int.Parse(command.Parameters["sector"]),
+                                    int.Parse(command.Parameters["place"])))
+                                {
+                                    commandResult = string.Format(EngineConstants.OccupiedPlace,
+                                        int.Parse(command.Parameters["sector"]), int.Parse(command.Parameters["place"]));
+                                    commandResults.Add(commandResult);
+                                    break;
+                                }
+
+                                if (!this.IsSectorExists(int.Parse(command.Parameters["sector"])))
+                                {
+                                    commandResult = string.Format(EngineConstants.WrongSector, int.Parse(command.Parameters["sector"]));
+                                    commandResults.Add(commandResult);
+                                    break;
+                                }
+
+                                if (!this.IsPlaceExists(int.Parse(command.Parameters["place"])))
+                                {
+                                    commandResult = string.Format(EngineConstants.WrongPlace,
+                                        int.Parse(command.Parameters["place"]), int.Parse(command.Parameters["sector"]));
+                                    commandResults.Add(commandResult);
+                                    break;
+                                }
+
+                                commandResult = this.ParkMotorbike(command.Parameters["licensePlate"],
+                                        command.Parameters["owner"],
+                                        int.Parse(command.Parameters["hours"]));
+                                break;
+                            case EngineConstants.VehicleTypeTruck:
+                                if (!this.IsPlaceFree(int.Parse(command.Parameters["sector"]),
+                                    int.Parse(command.Parameters["place"])))
+                                {
+                                    commandResult = string.Format(EngineConstants.OccupiedPlace,
+                                        int.Parse(command.Parameters["sector"]), int.Parse(command.Parameters["place"]));
+                                    commandResults.Add(commandResult);
+                                    break;
+                                }
+
+                                if (!this.IsSectorExists(int.Parse(command.Parameters["sector"])))
+                                {
+                                    commandResult = string.Format(EngineConstants.WrongSector, int.Parse(command.Parameters["sector"]));
+                                    commandResults.Add(commandResult);
+                                    break;
+                                }
+
+                                if (!this.IsPlaceExists(int.Parse(command.Parameters["place"])))
+                                {
+                                    commandResult = string.Format(EngineConstants.WrongPlace,
+                                        int.Parse(command.Parameters["place"]), int.Parse(command.Parameters["sector"]));
+                                    commandResults.Add(commandResult);
+                                    break;
+                                }
+
+                                commandResult = this.ParkTruck(command.Parameters["licensePlate"],
+                                        command.Parameters["owner"],
+                                        int.Parse(command.Parameters["hours"]));
+                                break;
+                        }
+                        break;*/
+                    default:
+                        throw new InvalidOperationException("Invalid command");
+                }
+
+                commandResults.Add(commandResult);
+            }
+
+            return commandResults;
         }
 
         private string ParkCar(string licensePlate, string ownerName, int reservedHours)
@@ -104,7 +218,28 @@
             }
         }
 
-        private bool SectorsCountCheck(int sectors)
+        private string SetupPark(int sectors, int places)
+        {
+            string output = "";
+
+            if (!this.IsSectorsPositive(sectors))
+            {
+                output = EngineConstants.WrongNumberOfSectors;
+            }
+            else if (!this.IsPlacesPositive(places))
+            {
+                output = EngineConstants.WrongNumberOfPlaces;
+            }
+            else
+            {
+                this.vehicleParkFactory.CreateVehiclePark(sectors, places);
+                output = EngineConstants.ParkCreated;
+            }
+
+            return output;
+        }
+
+        private bool IsSectorsPositive(int sectors)
         {
             if (sectors < 1)
             {
@@ -114,7 +249,7 @@
             return true;
         }
 
-        private bool PlacesCountCheck(int places)
+        private bool IsPlacesPositive(int places)
         {
             if (places < 1)
             {

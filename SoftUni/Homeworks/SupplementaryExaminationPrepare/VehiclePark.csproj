@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Engine\Command.cs" />
     <Compile Include="Engine\ConsoleInterface.cs" />
+    <Compile Include="Engine\EngineConstants.cs" />
     <Compile Include="Engine\Factories\VehicleFactory.cs" />
     <Compile Include="Engine\Factories\VehicleParkFactory.cs" />
     <Compile Include="Engine\VehicleParkEngine.cs" />

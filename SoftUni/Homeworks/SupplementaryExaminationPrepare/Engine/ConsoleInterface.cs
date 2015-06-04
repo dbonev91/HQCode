@@ -3,6 +3,7 @@
     using Interfaces.Engine;
     using System.Collections.Generic;
     using System;
+    using System.Text;
 
     public class ConsoleInterface : IUserInterface
     {
@@ -10,7 +11,7 @@
         {
             string currentLine = Console.ReadLine();
 
-            while (Console.ReadLine() != null)
+            while (currentLine != "End")
             {
                 if (currentLine == string.Empty)
                 {
@@ -25,7 +26,14 @@
 
         public void Output(IEnumerable<string> output)
         {
-            throw new NotImplementedException();
+            var result = new StringBuilder();
+            
+            foreach (string line in output)
+            {
+                result.AppendLine(line.Trim());
+            }
+
+            Console.WriteLine(result.ToString().Trim());
         }
     }
 }
